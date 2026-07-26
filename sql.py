@@ -14,7 +14,7 @@ def init_db():
         ( 
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             title TEXT NOT NULL,
-            description TEXT,
+            description TEXT DEFAULT 'reminder' ,
             recurrence TEXT,
             date TEXT NOT NULL,
             time TEXT NOT NULL
@@ -26,7 +26,7 @@ def add_reminder(title, description,recurrence, date, time):
         cursor = conn.cursor()
         cursor.execute(''' 
         insert into reminders (title,description,recurrence,date,time)
-        values (?,?,?,?,?))''',
+        values (?,?,?,?,?)''',
         (title, description, recurrence, date, time))
         conn.commit()
 def get_reminders():
@@ -38,5 +38,10 @@ def get_reminders():
         return cursor.fetchall()
 
 if __name__ == "__main__":
-    init_db()
+    with get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute(''' 
+            DELETE from reminders
+            ''')
+    
 
