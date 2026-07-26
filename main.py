@@ -28,10 +28,6 @@ def display_all_task():
         table.add_row(str(task[0]),task[1],task[2],task[3],task[4],task[5])
     console.print(table)
 
-import calendar
-from datetime import datetime
-
-
 def should_trigger(recurrence: str, task_date_str: str, now: datetime) -> bool:
     rec = recurrence.lower()
 
