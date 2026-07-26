@@ -81,6 +81,7 @@ def add_new_task():
     if not title:
         console.print("[red]Title cannot be empty![/red]\n")
         return
+
     description = qs.text("Enter description (optional):").ask()
     if not description:
         description = "reminder"
@@ -88,6 +89,7 @@ def add_new_task():
         "Select recurrence pattern:",
         choices=["once", "daily", "weekly", "monthly", "yearly"]
     ).ask()
+
     now = datetime.now()
     tomorrow = now + timedelta(days=1)
     default_date = tomorrow.strftime("%Y-%m-%d")
@@ -97,27 +99,34 @@ def add_new_task():
         date_str = qs.text(f"Enter date (YYYY-MM-DD) [{default_date}]:").ask()
         if not date_str:
             date_str = default_date
+
     elif recurrence == "weekly":
         date_str = qs.select(
             "Select day of the week:",
             choices=["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
         ).ask()
+
     elif recurrence == "monthly":
         date_str = qs.text("Enter day of the month (1-31):").ask()
         if not date_str:
             date_str = "1"
+
     elif recurrence == "yearly":
         default_mmdd = tomorrow.strftime("%m-%d")
         date_str = qs.text(f"Enter month & day (MM-DD) [{default_mmdd}]:").ask()
         if not date_str:
             date_str = default_mmdd
+
     elif recurrence == "daily":
         date_str = "Everyday"
     default_time = now.strftime("%H:%M")
     time_str = qs.text(f"Enter time (HH:MM) [{default_time}]:").ask()
+
     if not time_str:
         time_str = default_time
+
     sql.add_reminder(title, description, recurrence, date_str, time_str)
+
     console.print(f"[bold green]✔ Reminder '{title}' saved successfully![/bold green]\n")
 
 
